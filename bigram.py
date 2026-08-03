@@ -32,6 +32,7 @@ def get_batch(split):
   ix = torch.randint(len(data) - block_size, (batch_size,))
   x = torch.stack([data[i:i+block_size] for i in ix])
   y = torch.stack([data[i+1:i+block_size+1] for i in ix])
+
   x,y= x.to(device), y.to(device)
 
   return x,y
@@ -50,6 +51,7 @@ def estimate_loss():
   model.train()
   return out
 
+
 class BigramLanguageModel(nn.Module):
 
   def __init__(self, vocab_size):
@@ -59,9 +61,11 @@ class BigramLanguageModel(nn.Module):
     self.token_embedding_table = nn.Embedding(vocab_size, vocab_size)
 
   def forward(self, idx, targets=None):
+
     # idx and targets are both (B,T) tensor of integers
     logits = self.token_embedding_table(idx) # (B,T,C)
-
+    print(logits)
+    
     if targets is None:
       loss=None
     else:
